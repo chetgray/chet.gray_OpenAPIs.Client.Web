@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open APIs</title>
+</head>
+
+<body>
+    <header>
+        <h1>Open APIs</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Look up places by post code</h2>
+            <input id="placeCodeCountry" type="text" placeholder="Country Code" />
+            <input id="placePostCode" type="text" placeholder="Post Code" />
+            <button id="btnPlace">Call API</button>
+            <div id="placeResults"></div>
+        </section>
+        <section>
+            <h2>Look up post codes by place name</h2>
+            <input id="postCodeCountry" type="text" placeholder="Country Code" />
+            <input id="postCodeState" type="text" placeholder="State/Province" />
+            <input id="postCodePlaceName" type="text" placeholder="Place Name" />
+            <button id="btnPostCode">Call API</button>
+            <div id="postCodeResults"></div>
+        </section>
+        <section>
+            <h2>Look up sunrise and sunset times by latitude and longitude</h2>
+            <input id="sunriseSunsetLatitude" type="text" placeholder="Latitude" />
+            <input id="sunriseSunsetLongitude" type="text" placeholder="Longitude" />
+            <input id="sunriseSunsetDate" type="text" placeholder="Date" />
+            <input id="sunriseSunsetTimeZone" type="text" placeholder="Time Zone" />
+            <button id="btnSunriseSunset">Call API</button>
+            <div id="sunriseSunsetResults"></div>
+        </section>
+        <section>
+            <h2>Look up weather forecast by latitude and longitude</h2>
+            <input id="weatherForecastLatitude" type="text" placeholder="Latitude" />
+            <input id="weatherForecastLongitude" type="text" placeholder="Longitude" />
+            <button id="btnWeatherForecast">Call API</button>
+            <div id="weatherForecastResults"></div>
+        </section>
+        <section>
+            <h2>Look up nearby breweries by latitude and longitude</h2>
+            <input id="breweryLatitude" type="text" placeholder="Latitude" />
+            <input id="breweryLongitude" type="text" placeholder="Longitude" />
+            <input id="breweryType" type="text" placeholder="Brewery Type" />
+            <button id="btnBrewery">Call API</button>
+            <div id="breweryResults"></div>
+        </section>
+    </main>
+</body>
+
+</html>
