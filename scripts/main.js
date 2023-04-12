@@ -37,7 +37,7 @@ $(function () {
 
         const url = new URL(`https://www.zippopotam.us/${country}/${postCode}`);
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -55,7 +55,7 @@ $(function () {
 
         const url = new URL(`https://api.zippopotam.us/${country}/${state}/${placeName}`);
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -76,7 +76,7 @@ $(function () {
             `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=${date}&date=${date}&time=${timeZone}`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -95,7 +95,7 @@ $(function () {
             `https://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=astro&output=json`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -115,7 +115,7 @@ $(function () {
             `https://api.openbrewerydb.org/breweries?by_dist=${latitude},${longitude}&per_page=3&by_type=${type}`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -128,9 +128,10 @@ $(function () {
 
 /**
  * @param {JQuery} $results
+ * @param {Function | null} dataHandler
  * @param {ProgressEvent<XMLHttpRequest>} event
  */
-function handleXhrLoad($results, event) {
+function handleXhrLoad($results, dataHandler, event) {
     const xhr = event.target;
     if (xhr.status !== 200) {
         writeError($results, `The request was not successful. Status code: ${xhr.status}`);
@@ -149,7 +150,13 @@ function handleXhrLoad($results, event) {
         return;
     }
     console.log(data);
-    $results.text(JSON.stringify(data, null, 2));
+    if (dataHandler) {
+        dataHandler($results, data);
+    } else {
+        const pre = document.createElement("pre");
+        pre.textContent = JSON.stringify(data, null, 2);
+        $results[0].replaceChildren(pre);
+    }
 }
 
 /**
