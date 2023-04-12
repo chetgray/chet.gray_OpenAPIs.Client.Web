@@ -17,4 +17,4 @@ User Story #211927: AJAX: Use AJAX to call Open APIs
 > - [x] Each section should display the data returned from that API
 >   call.
 > - [x] There should be no instances where the whole page refreshes.
-> - [ ] All of your API calls should include error handling.
+> - [x] All of your API calls should include error handling.

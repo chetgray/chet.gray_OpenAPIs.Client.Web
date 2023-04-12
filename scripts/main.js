@@ -38,6 +38,7 @@ $(function () {
         const url = new URL(`https://www.zippopotam.us/${country}/${postCode}`);
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
         $results.text("Loading...");
@@ -55,6 +56,7 @@ $(function () {
         const url = new URL(`https://api.zippopotam.us/${country}/${state}/${placeName}`);
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
         $results.text("Loading...");
@@ -75,6 +77,7 @@ $(function () {
         );
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
         $results.text("Loading...");
@@ -93,6 +96,7 @@ $(function () {
         );
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
         $results.text("Loading...");
@@ -112,6 +116,7 @@ $(function () {
         );
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results));
+        xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
         $results.text("Loading...");
@@ -143,4 +148,14 @@ function handleXhrLoad($results, event) {
     }
     console.log(data);
     $results.text(JSON.stringify(data, null, 2));
+}
+
+/**
+ * @param {JQuery} $results
+ * @param {ProgressEvent<XMLHttpRequest>} event
+ */
+function handleXhrError($results, event) {
+    const message = `Error: ${event.target.status}`;
+    console.error(message);
+    $results.text(message);
 }
