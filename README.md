@@ -14,7 +14,7 @@ User Story #211927: AJAX: Use AJAX to call Open APIs
 >   the user can enter data for the requirements.
 > - [x] Each section should have a "Call API" button to initiate a call
 >   to that section's API.
-> - [ ] Each section should display the data returned from that API
+> - [x] Each section should display the data returned from that API
 >   call.
-> - [ ] There should be no instances where the whole page refreshes.
+> - [x] There should be no instances where the whole page refreshes.
 > - [ ] All of your API calls should include error handling.

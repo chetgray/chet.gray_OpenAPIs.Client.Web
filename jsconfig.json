@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "checkJs": true,
+    },
+    "typeAcquisition": {
+        "enable": true,
+        "include": [
+            "jquery",
+            "jqueryui",
+        ],
+    },
+}
