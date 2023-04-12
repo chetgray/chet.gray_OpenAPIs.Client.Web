@@ -133,17 +133,19 @@ $(function () {
 function handleXhrLoad($results, event) {
     const xhr = event.target;
     if (xhr.status !== 200) {
-        const message = `Error: ${xhr.status}`;
-        console.error(message);
-        $results.text(message);
+        writeError($results, `The request was not successful. Status code: ${xhr.status}`);
         return;
     }
     try {
         var data = JSON.parse(xhr.responseText);
     } catch (error) {
-        const message = `Error: ${error.message}`;
-        console.error(message);
-        $results.text(message);
+        let message;
+        if (error instanceof SyntaxError) {
+            message = "The response was not valid JSON.";
+        } else {
+            message = `An unknown error occurred. ${error.message}`;
+        }
+        writeError($results, message);
         return;
     }
     console.log(data);
@@ -155,7 +157,14 @@ function handleXhrLoad($results, event) {
  * @param {ProgressEvent<XMLHttpRequest>} event
  */
 function handleXhrError($results, event) {
-    const message = `Error: ${event.target.status}`;
-    console.error(message);
-    $results.text(message);
+    writeError($results, "The request encountered an error.");
+}
+
+/**
+ * @param {JQuery} $results
+ * @param {string} message
+ */
+function writeError($results, message) {
+    console.error(`Error: ${message}`);
+    $results.text(`Error: ${message}`);
 }
