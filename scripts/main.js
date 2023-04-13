@@ -194,6 +194,7 @@ $(function () {
         if ($breweryLatitude.val() !== latitude || $breweryLongitude.val() !== longitude) {
             $breweryLatitude.val(latitude);
             $breweryLongitude.val(longitude);
+            $breweryResults.empty();
         }
     }
 
