@@ -197,6 +197,22 @@ function writePlaceData($target, data) {
     const postCode = data["post code"];
     const places = data.places;
 
+    const $places = $(document.createElement("ul"));
+    places.forEach((place) => {
+        $places.append(
+            `<li><dl><dt>Place Name</dt><dd>${place["place name"]}</dd>` +
+                `<dt>State</dt><dd>${place.state} (${place["state abbreviation"]})</dd>` +
+                `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
+                `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+        );
+    });
+    
+    $target.html(
+        `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
+            `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
+    );
+    $target.append($places);
+}
     const $results = $(document.createElement("div"));
     $results.append(
         `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
