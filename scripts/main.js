@@ -96,10 +96,10 @@ $(function () {
         setLatestCoordinates(latitude, longitude);
 
         const url = new URL(
-            `https://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=astro&output=json`
+            `https://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=civillight&output=json`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writeWeatherData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -364,5 +364,40 @@ $(function () {
                 `<dt>Day Length</dt><dd>${results.day_length}</dd>` +
                 `<dt>Time Zone</dt><dd>${results.timezone}</dd></dl>`
         );
+    }
+
+    /**
+     * @param {JQuery<HTMLDivElement>} $target
+     * @param {{
+     *      init: string;
+     *      dataseries: {
+     *          date: number;
+     *          weather: string;
+     *          temp2m: {
+     *              min: number;
+     *              max: number;
+     *          };
+     *          wind10m_max: number;
+     *      }[];
+     * }} data
+     */
+    function writeWeatherData($target, data) {
+        const init = data.init;
+        const dataseries = data.dataseries;
+
+        const $dataseries = $(document.createElement("ul"));
+        dataseries.forEach((dataseries) => {
+            $dataseries.append(
+                `<li><dl><dt>Date</dt><dd>${dataseries.date}</dd>` +
+                    `<dt>Weather</dt><dd><img src="https://www.7timer.info/img/misc/about_civil_${dataseries.weather}.png" alt="${dataseries.weather}">` +
+                    ` ${dataseries.weather}</dd>` +
+                    `<dt>Min Temp</dt><dd>${dataseries.temp2m.min}</dd>` +
+                    `<dt>Max Temp</dt><dd>${dataseries.temp2m.max}</dd>` +
+                    `<dt>Max Wind Speed</dt><dd>${dataseries.wind10m_max}</dd></dl></li>`
+            );
+        });
+
+        $target.html(`<dl><dt>Forecast initialized</dt><dd>${init}</dd></dl>`);
+        $target.append($dataseries);
     }
 });
