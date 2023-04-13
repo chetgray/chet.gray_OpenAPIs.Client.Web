@@ -75,8 +75,14 @@ $(function () {
         setLatestCoordinates(latitude, longitude);
 
         const url = new URL(
-            `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=${date}&date=${date}&time=${timeZone}`
+            `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`
         );
+        if (date) {
+            url.searchParams.append("date", date);
+        }
+        if (timeZone) {
+            url.searchParams.append("timezone", timeZone);
+        }
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writeSunriseSunsetData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
