@@ -241,7 +241,7 @@ $(function () {
 
         setLatestCountry(countryAbbreviation);
         setLatestPostCode(postCode);
-        setLatestStateAndPlaceName(places[0].state, places[0]["place name"]);
+        setLatestStateAndPlaceName(places[0]["state abbreviation"], places[0]["place name"]);
         setLatestCoordinates(places[0].latitude, places[0].longitude);
 
         const $places = $(document.createElement("ul"));
