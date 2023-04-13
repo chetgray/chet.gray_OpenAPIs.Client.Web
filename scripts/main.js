@@ -135,15 +135,24 @@ $(function () {
      * @param {string} country
      */
     function setLatestCountry(country) {
-        $placeCodeCountry.val(country);
-        $postCodeCountry.val(country);
+        if ($placeCodeCountry.val().toString().toLowerCase() !== country.toLowerCase()) {
+            $placeCodeCountry.val(country);
+            $placeResults.empty();
+        }
+        if ($postCodeCountry.val().toString().toLowerCase() !== country.toLowerCase()) {
+            $postCodeCountry.val(country);
+            $postCodeResults.empty();
+        }
     }
 
     /**
      * @param {string} postCode
      */
     function setLatestPostCode(postCode) {
-        $placePostCode.val(postCode);
+        if ($placePostCode.val() !== postCode) {
+            $placePostCode.val(postCode);
+            $placeResults.empty();
+        }
     }
 
     /**
@@ -151,8 +160,14 @@ $(function () {
      * @param {string} placeName
      */
     function setLatestStateAndPlaceName(state, placeName) {
-        $postCodeState.val(state);
-        $postCodePlaceName.val(placeName);
+        if (
+            $postCodeState.val().toString().toLowerCase() !== state.toLowerCase() ||
+            $postCodePlaceName.val().toString().toLowerCase() !== placeName.toLowerCase()
+        ) {
+            $postCodeState.val(state);
+            $postCodePlaceName.val(placeName);
+            $postCodeResults.empty();
+        }
     }
 
     /**
@@ -160,12 +175,26 @@ $(function () {
      * @param {string} longitude
      */
     function setLatestCoordinates(latitude, longitude) {
-        $sunriseSunsetLatitude.val(latitude);
-        $sunriseSunsetLongitude.val(longitude);
-        $weatherForecastLatitude.val(latitude);
-        $weatherForecastLongitude.val(longitude);
-        $breweryLatitude.val(latitude);
-        $breweryLongitude.val(longitude);
+        if (
+            $sunriseSunsetLatitude.val() !== latitude ||
+            $sunriseSunsetLongitude.val() !== longitude
+        ) {
+            $sunriseSunsetLatitude.val(latitude);
+            $sunriseSunsetLongitude.val(longitude);
+            $sunriseSunsetResults.empty();
+        }
+        if (
+            $weatherForecastLatitude.val() !== latitude ||
+            $weatherForecastLongitude.val() !== longitude
+        ) {
+            $weatherForecastLatitude.val(latitude);
+            $weatherForecastLongitude.val(longitude);
+            $weatherForecastResults.empty();
+        }
+        if ($breweryLatitude.val() !== latitude || $breweryLongitude.val() !== longitude) {
+            $breweryLatitude.val(latitude);
+            $breweryLongitude.val(longitude);
+        }
     }
 
     /**
@@ -240,7 +269,6 @@ $(function () {
         const places = data.places;
 
         setLatestCountry(countryAbbreviation);
-        setLatestPostCode(postCode);
         setLatestStateAndPlaceName(places[0]["state abbreviation"], places[0]["place name"]);
         setLatestCoordinates(places[0].latitude, places[0].longitude);
 
@@ -284,7 +312,7 @@ $(function () {
         const places = data.places;
 
         setLatestCountry(countryAbbreviation);
-        setLatestStateAndPlaceName(stateAbbreviation, places[0]["place name"]);
+        setLatestPostCode(places[0]["post code"]);
         setLatestCoordinates(places[0].latitude, places[0].longitude);
 
         const $places = $(document.createElement("ul"));
