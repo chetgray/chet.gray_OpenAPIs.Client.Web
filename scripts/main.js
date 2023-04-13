@@ -78,7 +78,7 @@ $(function () {
             `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=${date}&date=${date}&time=${timeZone}`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writeSunriseSunsetData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -302,5 +302,39 @@ $(function () {
                 `<dt>State</dt><dd>${state} (${stateAbbreviation})</dd></dl>`
         );
         $target.append($places);
+    }
+
+    /**
+     * @param {JQuery<HTMLDivElement>} $target
+     * @param {{
+     *      results: {
+     *          sunrise: string;
+     *          sunset: string;
+     *          first_light: string;
+     *          last_light: string;
+     *          dawn: string;
+     *          dusk: string;
+     *          solar_noon: string;
+     *          golden_hour: string;
+     *          day_length: string;
+     *          timezone: string;
+     *      };
+     * }} data
+     */
+    function writeSunriseSunsetData($target, data) {
+        const results = data.results;
+
+        $target.html(
+            `<dl><dt>Sunrise</dt><dd>${results.sunrise}</dd>` +
+                `<dt>Sunset</dt><dd>${results.sunset}</dd>` +
+                `<dt>First Light</dt><dd>${results.first_light}</dd>` +
+                `<dt>Last Light</dt><dd>${results.last_light}</dd>` +
+                `<dt>Dawn</dt><dd>${results.dawn}</dd>` +
+                `<dt>Dusk</dt><dd>${results.dusk}</dd>` +
+                `<dt>Solar Noon</dt><dd>${results.solar_noon}</dd>` +
+                `<dt>Golden Hour</dt><dd>${results.golden_hour}</dd>` +
+                `<dt>Day Length</dt><dd>${results.day_length}</dd>` +
+                `<dt>Time Zone</dt><dd>${results.timezone}</dd></dl>`
+        );
     }
 });
