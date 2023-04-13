@@ -72,6 +72,8 @@ $(function () {
         const timeZone = /** @type {string} */ ($sunriseSunsetTimeZone.val());
         const $results = $sunriseSunsetResults;
 
+        setLatestCoordinates(latitude, longitude);
+
         const url = new URL(
             `https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}&date=${date}&date=${date}&time=${timeZone}`
         );
@@ -90,6 +92,8 @@ $(function () {
         const latitude = /** @type {string} */ ($weatherForecastLatitude.val());
         const longitude = /** @type {string} */ ($weatherForecastLongitude.val());
         const $results = $weatherForecastResults;
+
+        setLatestCoordinates(latitude, longitude);
 
         const url = new URL(
             `https://www.7timer.info/bin/api.pl?lon=${longitude}&lat=${latitude}&product=astro&output=json`
@@ -111,6 +115,8 @@ $(function () {
         const type = /** @type {string} */ ($breweryType.val());
         const $results = $breweryResults;
 
+        setLatestCoordinates(latitude, longitude);
+
         const url = new URL(
             `https://api.openbrewerydb.org/breweries?by_dist=${latitude},${longitude}&per_page=3&by_type=${type}`
         );
@@ -124,6 +130,43 @@ $(function () {
 
         return false;
     });
+
+    /**
+     * @param {string} country
+     */
+    function setLatestCountry(country) {
+        $placeCodeCountry.val(country);
+        $postCodeCountry.val(country);
+    }
+
+    /**
+     * @param {string} postCode
+     */
+    function setLatestPostCode(postCode) {
+        $placePostCode.val(postCode);
+    }
+
+    /**
+     * @param {string} state
+     * @param {string} placeName
+     */
+    function setLatestStateAndPlaceName(state, placeName) {
+        $postCodeState.val(state);
+        $postCodePlaceName.val(placeName);
+    }
+
+    /**
+     * @param {string} latitude
+     * @param {string} longitude
+     */
+    function setLatestCoordinates(latitude, longitude) {
+        $sunriseSunsetLatitude.val(latitude);
+        $sunriseSunsetLongitude.val(longitude);
+        $weatherForecastLatitude.val(latitude);
+        $weatherForecastLongitude.val(longitude);
+        $breweryLatitude.val(latitude);
+        $breweryLongitude.val(longitude);
+    }
 
     /**
      * @param {JQuery} $results
@@ -196,6 +239,11 @@ $(function () {
         const postCode = data["post code"];
         const places = data.places;
 
+        setLatestCountry(countryAbbreviation);
+        setLatestPostCode(postCode);
+        setLatestStateAndPlaceName(places[0].state, places[0]["place name"]);
+        setLatestCoordinates(places[0].latitude, places[0].longitude);
+
         const $places = $(document.createElement("ul"));
         places.forEach((place) => {
             $places.append(
@@ -234,6 +282,10 @@ $(function () {
         const state = data.state;
         const stateAbbreviation = data["state abbreviation"];
         const places = data.places;
+
+        setLatestCountry(countryAbbreviation);
+        setLatestStateAndPlaceName(stateAbbreviation, places[0]["place name"]);
+        setLatestCoordinates(places[0].latitude, places[0].longitude);
 
         const $places = $(document.createElement("ul"));
         places.forEach((place) => {
