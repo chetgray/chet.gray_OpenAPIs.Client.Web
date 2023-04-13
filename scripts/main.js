@@ -118,8 +118,11 @@ $(function () {
         setLatestCoordinates(latitude, longitude);
 
         const url = new URL(
-            `https://api.openbrewerydb.org/breweries?by_dist=${latitude},${longitude}&per_page=3&by_type=${type}`
+            `https://api.openbrewerydb.org/breweries?by_dist=${latitude},${longitude}&per_page=3`
         );
+        if (type) {
+            url.searchParams.append("by_type", type);
+        }
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writeBreweryData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
@@ -430,7 +433,7 @@ $(function () {
         });
 
         $target.html(
-            `<p>${data.length} ${$breweryType.val()}${data.length === 1 ? "" : "s"}` +
+            `<p>${data.length} ${$breweryType.val()} location${data.length === 1 ? "" : "s"}` +
                 ` nearest (${$breweryLatitude.val()}, ${$breweryLongitude.val()})</p>`
         );
         $target.append($breweries);

@@ -51,7 +51,20 @@
             <h2>Look up nearby breweries by latitude and longitude</h2>
             <input id="breweryLatitude" type="text" placeholder="Latitude" />
             <input id="breweryLongitude" type="text" placeholder="Longitude" />
-            <input id="breweryType" type="text" placeholder="Brewery Type" />
+            <select id="breweryType">
+                <option value="" selected disabled>Brewery Type (optional)</option>
+                <option value="">Any</option>
+                <option value="micro">Micro</option>
+                <option value="nano">Nano</option>
+                <option value="regional">Regional</option>
+                <option value="brewpub">Brewpub</option>
+                <option value="large">Large</option>
+                <option value="planning">Planning</option>
+                <option value="bar">Bar</option>
+                <option value="contract">Contract</option>
+                <option value="proprietor">Proprietor</option>
+                <option value="closed">Closed</option>
+            </select>
             <button id="btnBrewery">Call API</button>
             <div id="breweryResults"></div>
         </section>
