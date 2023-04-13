@@ -1,7 +1,7 @@
 // @ts-check
 
 $(function () {
-    const $placeCodeCountry = $("#placeCodeCountry");
+    const $placeCountry = $("#placeCountry");
     const $placePostCode = $("#placePostCode");
     const $btnPlace = $("#btnPlace");
     const $placeResults = $("#placeResults");
@@ -31,7 +31,7 @@ $(function () {
     const $breweryResults = $("#breweryResults");
 
     $btnPlace.on("click", function () {
-        const country = /** @type {string} */ ($placeCodeCountry.val());
+        const country = /** @type {string} */ ($placeCountry.val());
         const postCode = /** @type {string} */ ($placePostCode.val());
         const $results = $placeResults;
 
@@ -135,8 +135,8 @@ $(function () {
      * @param {string} country
      */
     function setLatestCountry(country) {
-        if ($placeCodeCountry.val().toString().toLowerCase() !== country.toLowerCase()) {
-            $placeCodeCountry.val(country);
+        if ($placeCountry.val().toString().toLowerCase() !== country.toLowerCase()) {
+            $placeCountry.val(country);
             $placeResults.empty();
         }
         if ($postCodeCountry.val().toString().toLowerCase() !== country.toLowerCase()) {
