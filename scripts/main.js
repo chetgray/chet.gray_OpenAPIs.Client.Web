@@ -37,7 +37,7 @@ $(function () {
 
         const url = new URL(`https://www.zippopotam.us/${country}/${postCode}`);
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writePlaceData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -174,4 +174,43 @@ function handleXhrError($results, event) {
 function writeError($results, message) {
     console.error(`Error: ${message}`);
     $results.text(`Error: ${message}`);
+}
+
+/**
+ * @param {JQuery<HTMLDivElement>} $target
+ * @param {{
+ *      country: string;
+ *      "country abbreviation": string;
+ *      "post code": string;
+ *      places: {
+ *          "place name": string;
+ *          state: string;
+ *          "state abbreviation": string;
+ *          latitude: string;
+ *          longitude: string;
+ *      }[];
+ * }} data
+ */
+function writePlaceData($target, data) {
+    const country = data.country;
+    const countryAbbreviation = data["country abbreviation"];
+    const postCode = data["post code"];
+    const places = data.places;
+
+    const $results = $(document.createElement("div"));
+    $results.append(
+        `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
+            `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
+    );
+    const $places = $(document.createElement("ul"));
+    places.forEach((place) => {
+        $places.append(
+            `<li><dl><dt>Place Name</dt><dd>${place["place name"]}</dd>` +
+                `<dt>State</dt><dd>${place.state} (${place["state abbreviation"]})</dd>` +
+                `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
+                `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+        );
+    });
+    $results.append($places);
+    $target.replaceWith($results);
 }
