@@ -55,7 +55,7 @@ $(function () {
 
         const url = new URL(`https://api.zippopotam.us/${country}/${state}/${placeName}`);
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writePostCodeData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -206,27 +206,49 @@ function writePlaceData($target, data) {
                 `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
         );
     });
-    
+
     $target.html(
         `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
             `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
     );
     $target.append($places);
 }
-    const $results = $(document.createElement("div"));
-    $results.append(
-        `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
-            `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
-    );
+
+/**
+ * @param {JQuery<HTMLDivElement>} $target
+ * @param {{
+ *      country: string;
+ *      "country abbreviation": string;
+ *      state: string;
+ *      "state abbreviation": string;
+ *      places: {
+ *          "post code": string;
+ *          "place name": string;
+ *          latitude: string;
+ *          longitude: string;
+ *      }[];
+ * }} data
+ */
+function writePostCodeData($target, data) {
+    const country = data.country;
+    const countryAbbreviation = data["country abbreviation"];
+    const state = data.state;
+    const stateAbbreviation = data["state abbreviation"];
+    const places = data.places;
+
     const $places = $(document.createElement("ul"));
     places.forEach((place) => {
         $places.append(
-            `<li><dl><dt>Place Name</dt><dd>${place["place name"]}</dd>` +
-                `<dt>State</dt><dd>${place.state} (${place["state abbreviation"]})</dd>` +
+            `<li><dl><dt>Post Code</dt><dd>${place["post code"]}</dd>` +
+                `<dt>Place Name</dt><dd>${place["place name"]}</dd>` +
                 `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
                 `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
         );
     });
-    $results.append($places);
-    $target.replaceWith($results);
+
+    $target.html(
+        `<dl><dt>Country</dt><dd>${data.country} (${countryAbbreviation})</dd>` +
+            `<dt>State</dt><dd>${state} (${stateAbbreviation})</dd></dl>`
+    );
+    $target.append($places);
 }
