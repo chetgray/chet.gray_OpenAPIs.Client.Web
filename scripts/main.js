@@ -124,131 +124,131 @@ $(function () {
 
         return false;
     });
-});
 
-/**
- * @param {JQuery} $results
- * @param {Function | null} dataHandler
- * @param {ProgressEvent<XMLHttpRequest>} event
- */
-function handleXhrLoad($results, dataHandler, event) {
-    const xhr = event.target;
-    if (xhr.status !== 200) {
-        writeError($results, `The request was not successful. Status code: ${xhr.status}`);
-        return;
-    }
-    try {
-        var data = JSON.parse(xhr.responseText);
-    } catch (error) {
-        let message;
-        if (error instanceof SyntaxError) {
-            message = "The response was not valid JSON.";
-        } else {
-            message = `An unknown error occurred. ${error.message}`;
+    /**
+     * @param {JQuery} $results
+     * @param {Function | null} dataHandler
+     * @param {ProgressEvent<XMLHttpRequest>} event
+     */
+    function handleXhrLoad($results, dataHandler, event) {
+        const xhr = event.target;
+        if (xhr.status !== 200) {
+            writeError($results, `The request was not successful. Status code: ${xhr.status}`);
+            return;
         }
-        writeError($results, message);
-        return;
+        try {
+            var data = JSON.parse(xhr.responseText);
+        } catch (error) {
+            let message;
+            if (error instanceof SyntaxError) {
+                message = "The response was not valid JSON.";
+            } else {
+                message = `An unknown error occurred. ${error.message}`;
+            }
+            writeError($results, message);
+            return;
+        }
+        console.log(data);
+        if (dataHandler) {
+            dataHandler($results, data);
+        } else {
+            const pre = document.createElement("pre");
+            pre.textContent = JSON.stringify(data, null, 2);
+            $results[0].replaceChildren(pre);
+        }
     }
-    console.log(data);
-    if (dataHandler) {
-        dataHandler($results, data);
-    } else {
-        const pre = document.createElement("pre");
-        pre.textContent = JSON.stringify(data, null, 2);
-        $results[0].replaceChildren(pre);
+
+    /**
+     * @param {JQuery} $results
+     * @param {ProgressEvent<XMLHttpRequest>} event
+     */
+    function handleXhrError($results, event) {
+        writeError($results, "The request encountered an error.");
     }
-}
 
-/**
- * @param {JQuery} $results
- * @param {ProgressEvent<XMLHttpRequest>} event
- */
-function handleXhrError($results, event) {
-    writeError($results, "The request encountered an error.");
-}
+    /**
+     * @param {JQuery} $results
+     * @param {string} message
+     */
+    function writeError($results, message) {
+        console.error(`Error: ${message}`);
+        $results.text(`Error: ${message}`);
+    }
 
-/**
- * @param {JQuery} $results
- * @param {string} message
- */
-function writeError($results, message) {
-    console.error(`Error: ${message}`);
-    $results.text(`Error: ${message}`);
-}
+    /**
+     * @param {JQuery<HTMLDivElement>} $target
+     * @param {{
+     *      country: string;
+     *      "country abbreviation": string;
+     *      "post code": string;
+     *      places: {
+     *          "place name": string;
+     *          state: string;
+     *          "state abbreviation": string;
+     *          latitude: string;
+     *          longitude: string;
+     *      }[];
+     * }} data
+     */
+    function writePlaceData($target, data) {
+        const country = data.country;
+        const countryAbbreviation = data["country abbreviation"];
+        const postCode = data["post code"];
+        const places = data.places;
 
-/**
- * @param {JQuery<HTMLDivElement>} $target
- * @param {{
- *      country: string;
- *      "country abbreviation": string;
- *      "post code": string;
- *      places: {
- *          "place name": string;
- *          state: string;
- *          "state abbreviation": string;
- *          latitude: string;
- *          longitude: string;
- *      }[];
- * }} data
- */
-function writePlaceData($target, data) {
-    const country = data.country;
-    const countryAbbreviation = data["country abbreviation"];
-    const postCode = data["post code"];
-    const places = data.places;
+        const $places = $(document.createElement("ul"));
+        places.forEach((place) => {
+            $places.append(
+                `<li><dl><dt>Place Name</dt><dd>${place["place name"]}</dd>` +
+                    `<dt>State</dt><dd>${place.state} (${place["state abbreviation"]})</dd>` +
+                    `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
+                    `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+            );
+        });
 
-    const $places = $(document.createElement("ul"));
-    places.forEach((place) => {
-        $places.append(
-            `<li><dl><dt>Place Name</dt><dd>${place["place name"]}</dd>` +
-                `<dt>State</dt><dd>${place.state} (${place["state abbreviation"]})</dd>` +
-                `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
-                `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+        $target.html(
+            `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
+                `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
         );
-    });
+        $target.append($places);
+    }
 
-    $target.html(
-        `<dl><dt>Country</dt><dd>${country} (${countryAbbreviation})</dd>` +
-            `<dt>Post Code</dt><dd>${postCode}</dd></dl>`
-    );
-    $target.append($places);
-}
+    /**
+     * @param {JQuery<HTMLDivElement>} $target
+     * @param {{
+     *      country: string;
+     *      "country abbreviation": string;
+     *      state: string;
+     *      "state abbreviation": string;
+     *      places: {
+     *          "post code": string;
+     *          "place name": string;
+     *          latitude: string;
+     *          longitude: string;
+     *      }[];
+     * }} data
+     */
+    function writePostCodeData($target, data) {
+        const country = data.country;
+        const countryAbbreviation = data["country abbreviation"];
+        const state = data.state;
+        const stateAbbreviation = data["state abbreviation"];
+        const places = data.places;
 
-/**
- * @param {JQuery<HTMLDivElement>} $target
- * @param {{
- *      country: string;
- *      "country abbreviation": string;
- *      state: string;
- *      "state abbreviation": string;
- *      places: {
- *          "post code": string;
- *          "place name": string;
- *          latitude: string;
- *          longitude: string;
- *      }[];
- * }} data
- */
-function writePostCodeData($target, data) {
-    const country = data.country;
-    const countryAbbreviation = data["country abbreviation"];
-    const state = data.state;
-    const stateAbbreviation = data["state abbreviation"];
-    const places = data.places;
+        const $places = $(document.createElement("ul"));
+        places.forEach((place) => {
+            $places.append(
+                `<li><dl><dt>Post Code</dt><dd>${place["post code"]}</dd>` +
+                    `<dt>Place Name</dt><dd>${place["place name"]}</dd>` +
+                    `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
+                    `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+            );
+        });
 
-    const $places = $(document.createElement("ul"));
-    places.forEach((place) => {
-        $places.append(
-            `<li><dl><dt>Post Code</dt><dd>${place["post code"]}</dd>` +
-                `<dt>Place Name</dt><dd>${place["place name"]}</dd>` +
-                `<dt>Latitude</dt><dd>${place.latitude}</dd>` +
-                `<dt>Longitude</dt><dd>${place.longitude}</dd></dl></li>`
+        $target.html(
+            `<dl><dt>Country</dt><dd>${data.country} (${countryAbbreviation})</dd>` +
+                `<dt>State</dt><dd>${state} (${stateAbbreviation})</dd></dl>`
         );
-    });
-
-    $target.html(
-        `<dl><dt>Country</dt><dd>${data.country} (${countryAbbreviation})</dd>` +
-            `<dt>State</dt><dd>${state} (${stateAbbreviation})</dd></dl>`
-    );
-    $target.append($places);
-}
+        $target.append($places);
+    }
+});
