@@ -121,7 +121,7 @@ $(function () {
             `https://api.openbrewerydb.org/breweries?by_dist=${latitude},${longitude}&per_page=3&by_type=${type}`
         );
         const xhr = new XMLHttpRequest();
-        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, null));
+        xhr.addEventListener("load", handleXhrLoad.bind(xhr, $results, writeBreweryData));
         xhr.addEventListener("error", handleXhrError.bind(xhr, $results));
 
         xhr.open("GET", url);
@@ -399,5 +399,39 @@ $(function () {
 
         $target.html(`<dl><dt>Forecast initialized</dt><dd>${init}</dd></dl>`);
         $target.append($dataseries);
+    }
+
+    /**
+     * @param {JQuery<HTMLDivElement>} $target
+     * @param {{
+     *      name: string;
+     *      brewery_type: string;
+     *      street: string;
+     *      city: string;
+     *      state: string;
+     *      postal_code: string;
+     *      phone: string;
+     *      website_url: string;
+     *      updated_at: string;
+     * }[]} data
+     */
+    function writeBreweryData($target, data) {
+        const $breweries = $(document.createElement("ul"));
+        data.forEach((brewery) => {
+            $breweries.append(
+                `<li><dl><dt>Name</dt><dd>${brewery.name}</dd>` +
+                    `<dt>Type</dt><dd>${brewery.brewery_type}</dd>` +
+                    `<dt>Address</dt><dd>${brewery.street}, ${brewery.city}, ${brewery.state} ${brewery.postal_code}</dd>` +
+                    `<dt>Phone</dt><dd>${brewery.phone}</dd>` +
+                    `<dt>Website</dt><dd><a href="${brewery.website_url}">${brewery.website_url}</a></dd>` +
+                    `<dt>Last Updated</dt><dd>${brewery.updated_at}</dd></dl></li>`
+            );
+        });
+
+        $target.html(
+            `<p>${data.length} ${$breweryType.val()}${data.length === 1 ? "" : "s"}` +
+                ` nearest (${$breweryLatitude.val()}, ${$breweryLongitude.val()})</p>`
+        );
+        $target.append($breweries);
     }
 });
