@@ -422,7 +422,6 @@ $(function () {
      *      postal_code: string;
      *      phone: string;
      *      website_url: string;
-     *      updated_at: string;
      * }[]} data
      */
     function writeBreweryData($target, data) {
@@ -433,8 +432,7 @@ $(function () {
                     `<dt>Type</dt><dd>${brewery.brewery_type}</dd>` +
                     `<dt>Address</dt><dd>${brewery.street}, ${brewery.city}, ${brewery.state} ${brewery.postal_code}</dd>` +
                     `<dt>Phone</dt><dd>${brewery.phone}</dd>` +
-                    `<dt>Website</dt><dd><a href="${brewery.website_url}">${brewery.website_url}</a></dd>` +
-                    `<dt>Last Updated</dt><dd>${brewery.updated_at}</dd></dl></li>`
+                    `<dt>Website</dt><dd><a href="${brewery.website_url}">${brewery.website_url}</a></dd>`
             );
         });
 
