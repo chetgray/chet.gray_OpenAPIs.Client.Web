@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open APIs</title>
+    <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css"
+          rel="stylesheet" />
+    <link type="text/css" href="https://unpkg.com/sakura.css/css/sakura.css" rel="stylesheet" />
+    <link href="styles/main.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <h1>Open APIs</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Look up places by post code</h2>
+            <input id="placeCountry" type="text" placeholder="Country Code" />
+            <input id="placePostCode" type="text" placeholder="Post Code" />
+            <button id="btnPlace">Call API</button>
+            <div id="placeResults"></div>
+        </section>
+        <section>
+            <h2>Look up post codes by place name</h2>
+            <input id="postCodeCountry" type="text" placeholder="Country Code" />
+            <input id="postCodeState" type="text" placeholder="State/Province" />
+            <input id="postCodePlaceName" type="text" placeholder="Place Name" />
+            <button id="btnPostCode">Call API</button>
+            <div id="postCodeResults"></div>
+        </section>
+        <section>
+            <h2>Look up sunrise and sunset times by latitude and longitude</h2>
+            <input id="sunriseSunsetLatitude" type="text" placeholder="Latitude" />
+            <input id="sunriseSunsetLongitude" type="text" placeholder="Longitude" />
+            <input id="sunriseSunsetDate" type="date" placeholder="Date (optional)" />
+            <input id="sunriseSunsetTimeZone" type="text" placeholder="Time Zone (optional)" />
+            <button id="btnSunriseSunset">Call API</button>
+            <div id="sunriseSunsetResults"></div>
+        </section>
+        <section>
+            <h2>Look up weather forecast by latitude and longitude</h2>
+            <input id="weatherForecastLatitude" type="text" placeholder="Latitude" />
+            <input id="weatherForecastLongitude" type="text" placeholder="Longitude" />
+            <button id="btnWeatherForecast">Call API</button>
+            <div id="weatherForecastResults"></div>
+        </section>
+        <section>
+            <h2>Look up nearby breweries by latitude and longitude</h2>
+            <input id="breweryLatitude" type="text" placeholder="Latitude" />
+            <input id="breweryLongitude" type="text" placeholder="Longitude" />
+            <select id="breweryType">
+                <option value selected disabled>Brewery Type (optional)</option>
+                <option value="">Any</option>
+                <option value="micro">Micro</option>
+                <option value="nano">Nano</option>
+                <option value="regional">Regional</option>
+                <option value="brewpub">Brewpub</option>
+                <option value="large">Large</option>
+                <option value="planning">Planning</option>
+                <option value="bar">Bar</option>
+                <option value="contract">Contract</option>
+                <option value="proprietor">Proprietor</option>
+                <option value="closed">Closed</option>
+            </select>
+            <button id="btnBrewery">Call API</button>
+            <div id="breweryResults"></div>
+        </section>
+    </main>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+
+</html>
